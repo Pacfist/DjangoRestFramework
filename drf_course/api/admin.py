@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import User, Color, BaseProduct, Product, Order, OrderItem
+from .models import User, Color, BaseProduct, Product, Order, OrderItem, Memory
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 
@@ -19,10 +19,14 @@ class BaseProductAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
     search_fields = ('name',)
 
+@admin.register(Memory)
+class MemoryAdmin(admin.ModelAdmin):
+    list_display = ('memory',)
+
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'base_product', 'color', 'stock', 'price', 'in_stock')
+    list_display = ('id', 'full_name', 'base_product', 'color', 'stock', 'price', 'in_stock', 'memory')
     list_filter = ('base_product', 'color', 'stock')
     search_fields = ('name', 'base_product__name', 'color__name')
     readonly_fields = ('in_stock',)
