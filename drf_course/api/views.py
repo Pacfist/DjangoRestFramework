@@ -1,10 +1,11 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from api.serializer import BaseProductSerializer, ProductSerializer
-from api.models import BaseProduct, Product
+from api.serializer import *
+from api.models import *
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-# Create your views here.
+from django.shortcuts import get_object_or_404
+# Createyourviews
 
 @api_view(['GET'])
 def baseProduct_list(request):
@@ -24,9 +25,16 @@ def products_list(request):
 
 @api_view(['GET'])
 def get_product(request, pk):
-    products = Product.objects.filter(id=pk)
-    if not products.exists():
-        products = Product.objects.all()
-    serializer = ProductSerializer(products)
+    product = get_object_or_404(Product, id=pk)
+    print(product)
+    # print(product)
+    # if not product.exists():
+    #     product = Product.objects.all()
+    serializer = ProductSerializer(product)
     return Response(serializer.data)
 
+@api_view(['GET'])
+def order_list(request):
+    orders = Order.objects.all()
+    serializer = OrderSerializer(orders, many = True)
+    return Response(serializer.data)
